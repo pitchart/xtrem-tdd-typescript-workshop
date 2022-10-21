@@ -40,7 +40,7 @@ TDD increases our confidence in our code :
 * Over time, the tests suite guards us against regression failures
 * We constantly have a fast feedback on the system's state (fast feedback-loop)
 
-![Confidence](img/confidence.png)
+![Confidence](../img/confidence.png)
 
 ## Building block of TDD
 
@@ -72,23 +72,23 @@ A 3-phase process :
         * The longer it takes to come back to a safe state, the harder it is
         * Avoid sunk cost fallacy
 
-[![TDD steps](img/tdd.png)](https://tddmanifesto.com/getting-started/)
+[![TDD steps](../img/tdd.png)](https://tddmanifesto.com/getting-started/)
 
 ## 3 Rules from Uncle Bob
 1. Write production code only to pass a failing unit test.
 1. Write no more of a unit test than sufficient to fail (compilation failures are failures).
 1. Write no more production code than necessary to pass the one failing unit test.
 
-![TDD cycle](img/tdd-rules.png)
+![TDD cycle](../img/tdd-rules.png)
 
 # Xtrem TDD
 Your craft mentor available online [here](https://xtrem-tdd.netlify.app/)
 
-![Confidence](img/xtrem.png)
+![Confidence](../img/xtrem.png)
 
 # A word on Pair Programming
 Change role at each new failing test.
 
-![Ping Pong pairing](img/ping-pong-pairing.jpg)
+![Ping Pong pairing](../img/ping-pong-pairing.jpg)
 
 If you're more familiar with another pairing style, feel free to apply it.
