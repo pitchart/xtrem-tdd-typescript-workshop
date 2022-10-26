@@ -1,4 +1,6 @@
 import { Currency } from '../src/Currency'
+import { Money } from '../src/Money'
+import { MoneyError } from '../src/MoneyError'
 
 describe('Money', function () {
   describe.each([
@@ -32,33 +34,4 @@ describe('Money', function () {
   })
 })
 
-class MoneyError extends Error {
-  constructor(currency: Currency, anotherCurrency: Currency) {
-    super(`unable to add ${currency} and ${anotherCurrency}`)
-  }
-}
 
-class Money {
-  divide(times: number): Money {
-    return new Money(this.amount / times, this.currency)
-  }
-
-  multiply(times: number): Money {
-    return new Money(this.amount * times, this.currency)
-  }
-
-  add(anotherMoney: Money): Money {
-    if (this.currency !== anotherMoney.currency) {
-      throw new MoneyError(this.currency, anotherMoney.currency)
-    }
-    return new Money(anotherMoney.amount + this.amount, this.currency)
-  }
-
-
-  private readonly amount: number
-  private readonly currency: Currency
-  constructor(amount: number, currency: Currency) {
-    this.amount = amount
-    this.currency = currency
-  }
-}

@@ -1,19 +1,17 @@
 import { Currency } from './Currency'
 import { Bank } from './Bank'
+import { Money } from './Money'
 
 export class Portfolio {
-  content: Map<Currency, number> = new Map()
+  moneys: Array<Money> = new Array()
 
   evaluate (bank: Bank, currency: Currency): number {
-    let result: number = 0
-    this.content.forEach((value, key) => {
-      result += bank.Convert(value, key, currency)
-    })
-    return result
+    return this.moneys.reduce((acc: number, currentMoney: Money) => {
+      return acc + bank.Convert(currentMoney.amount, currentMoney.currency, currency)
+    }, 0)
   }
 
   add (amount: number, currency: Currency): void {
-    const newAmount = amount + (this.content.get(currency) ?? 0)
-    this.content.set(currency, newAmount)
+    this.moneys.push(new Money(amount, currency))
   }
 }
