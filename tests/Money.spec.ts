@@ -16,6 +16,10 @@ describe('Money', function () {
       expect(() => money.add(new Money(b, Currency.USD))).toThrow(MoneyError).toThrow('unable to add EUR and USD')
     })
   })
+
+  it('should multiply money', () => {
+
+  })
 })
 
 class MoneyError extends Error {
