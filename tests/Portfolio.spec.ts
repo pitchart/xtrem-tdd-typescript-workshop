@@ -1,6 +1,5 @@
 import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
-import { number } from 'fp-ts'
 
 describe('Portfolio', function () {
   it('should 5 USD + 10 EUR = 17 USD', () => {
@@ -21,18 +20,17 @@ describe('Portfolio', function () {
 })
 
 class Portfolio {
-  content: number
-
-  
-  constructor() {
-    this.content = 0;
-  }
+  content: Map<Currency, number> = new Map()
 
   evaluate (bank: Bank, currency: Currency): number {
-    return 17
+    let result: number = 0
+    this.content.forEach((value, key) => {
+      result += bank.Convert(value, key, currency)
+    })
+    return result
   }
 
   add (arg0: number, currency: Currency): void {
-    this.content = this.content + number;
+    this.content.set(currency, arg0)
   }
 }
