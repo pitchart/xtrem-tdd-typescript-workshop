@@ -2,18 +2,16 @@ import { Currency } from '../src/Currency'
 
 describe('Money', function () {
 
-  
-  it('should add money in the same currency', () => {
-    const money = new Money(50, Currency.EUR)
-    const result = money.add(new Money(10, Currency.EUR))
-    expect(result).toEqual(new Money(60, Currency.EUR))
-  })
-
-  it('should add another money in the same currency', () => {
-    const money = new Money(100, Currency.EUR)
-    const result = money.add(new Money(10, Currency.EUR))
-    expect(result).toEqual(new Money(110, Currency.EUR))
-  })
+  describe.each([
+    {a: 50, b: 10, expected: 60},
+    {a: 100, b: 10, expected: 110}
+  ])('Money sum', ({a, b, expected}) => {
+    it(`should add money in the same currency`, () => {
+      const money = new Money(a, Currency.EUR)
+      const result = money.add(new Money(b, Currency.EUR))
+      expect(result).toEqual(new Money(expected, Currency.EUR))
+    })
+  });
 })
 
 class Money {
