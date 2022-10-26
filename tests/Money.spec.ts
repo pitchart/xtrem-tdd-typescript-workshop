@@ -11,7 +11,7 @@ describe('Money', function () {
       expect(result).toEqual(new Money(expected, Currency.EUR))
     })
 
-    it('should', () => {
+    it('should not allow to add money from different currencies', () => {
       const money = new Money(a, Currency.EUR)
       expect(() => money.add(new Money(b, Currency.USD))).toThrow(MoneyError).toThrow('unable to add EUR and USD')
     })
@@ -19,15 +19,15 @@ describe('Money', function () {
 })
 
 class MoneyError extends Error {
-  constructor () {
-    super('')
+  constructor (currency: Currency, anotherCurrency: Currency) {
+    super(`unable to add ${currency} and ${anotherCurrency}`)
   }
 }
 
 class Money {
   add (anotherMoney: Money): Money {
     if (this.currency !== anotherMoney.currency) {
-      throw new MoneyError()
+      throw new MoneyError(this.currency, anotherMoney.currency)
     }
     return new Money(anotherMoney.amount + this.amount, this.currency)
   }
