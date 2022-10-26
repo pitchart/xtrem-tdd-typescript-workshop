@@ -16,6 +16,6 @@ class Portfolio {
     return 17
   }
 
-  add (arg0: number, currency: Currency) {
+  add (arg0: number, currency: Currency): void {
   }
 }
