@@ -17,6 +17,14 @@ describe('Portfolio', function () {
     portfolio.add(10, Currency.EUR)
     expect(portfolio.evaluate(bank, Currency.USD)).toBe(22)
   })
+
+  it('should 5 USD + 10 USD = 15 USD', () => {
+    const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
+    const portfolio = new Portfolio()
+    portfolio.add(5, Currency.USD)
+    portfolio.add(10, Currency.USD)
+    expect(portfolio.evaluate(bank, Currency.USD)).toBe(15)
+  })
 })
 
 class Portfolio {
@@ -30,7 +38,8 @@ class Portfolio {
     return result
   }
 
-  add (arg0: number, currency: Currency): void {
-    this.content.set(currency, arg0)
+  add (amount: number, currency: Currency): void {
+    const newAmount = amount + (this.content.get(currency) ?? 0)
+    this.content.set(currency, newAmount)
   }
 }
