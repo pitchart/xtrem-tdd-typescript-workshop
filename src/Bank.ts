@@ -15,14 +15,18 @@ export class Bank {
     this._exchangeRates.set(this.KeyFor(from, to), rate)
   }
 
-  Convert (amount: number, from: Currency, to: Currency): number {
+  private Convert (amount: number, from: Currency, to: Currency): number {
     if (!this.CanConvert(from, to)) { throw new MissingExchangeRateError(from, to) }
 
     return this.ConvertSafely(amount, from, to)
   }
 
   ConvertMoney (money: Money, currency: Currency): Money {
-    return new Money(this.Convert(money.amount, money.currency, currency), currency)
+    if (!this.CanConvert(money.currency, currency)) {
+      throw new MissingExchangeRateError(money.currency, currency)
+    }
+
+    return new Money(this.ConvertSafely(money.amount, money.currency, currency), currency)
   }
 
   private ConvertSafely (amount: number, from: Currency, to: Currency): number {
