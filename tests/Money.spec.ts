@@ -33,5 +33,3 @@ describe('Money', function () {
     expect(moneyResult).toEqual(new Money(20 / 3, Currency.EUR))
   })
 })
-
-
