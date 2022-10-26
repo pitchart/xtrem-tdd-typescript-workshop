@@ -1,5 +1,6 @@
 import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
+import { Portfolio } from '../src/Portfolio'
 
 let bank: Bank
 let portfolio: Portfolio
@@ -8,6 +9,7 @@ describe('Portfolio', function () {
   beforeEach(() => {
     bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
     bank.AddExchangeRate(Currency.USD, Currency.KRW, 1100)
+    bank.AddExchangeRate(Currency.EUR, Currency.KRW, 220)
     portfolio = new Portfolio()
   })
   it('should 5 USD + 10 EUR = 17 USD', () => {
@@ -43,20 +45,3 @@ describe('Portfolio', function () {
     expect(portfolio.evaluate(bank, Currency.KRW)).toBe(3300)
   })
 })
-
-class Portfolio {
-  content: Map<Currency, number> = new Map()
-
-  evaluate(bank: Bank, currency: Currency): number {
-    let result: number = 0
-    this.content.forEach((value, key) => {
-      result += bank.Convert(value, key, currency)
-    })
-    return result
-  }
-
-  add(amount: number, currency: Currency): void {
-    const newAmount = amount + (this.content.get(currency) ?? 0)
-    this.content.set(currency, newAmount)
-  }
-}
