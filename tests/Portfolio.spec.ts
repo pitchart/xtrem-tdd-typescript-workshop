@@ -25,6 +25,13 @@ describe('Portfolio', function () {
     portfolio.add(10, Currency.USD)
     expect(portfolio.evaluate(bank, Currency.USD)).toBe(15)
   })
+  it('should 1 USD + 1100 KRW = 2200 KRW', () => {
+    const bank = Bank.withExchangeRate(Currency.USD, Currency.KRW, 1100)
+    const portfolio = new Portfolio()
+    portfolio.add(1, Currency.USD)
+    portfolio.add(1100, Currency.KRW)
+    expect(portfolio.evaluate(bank, Currency.KRW)).toBe(2200)
+  })
 })
 
 class Portfolio {
