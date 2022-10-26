@@ -5,29 +5,30 @@ import { Money } from './Money'
 class ExchangeRate {
   private readonly from: Currency;
   private readonly to: Currency;
-  private readonly rate: number;
+  private readonly _rate: number;
+  public get rate(): number {
+    return this._rate;
+  }
 
   constructor(from: Currency, to: Currency, rate: number) {
     this.from = from;
     this.to = to;
-    this.rate = rate;
+    this._rate = rate;
   }
   
 }
 
 export class Bank {
-  private readonly _exchangeRates: Map<string, number> = new Map()
-  private readonly rates: ExchangeRate[] = []
+  private readonly rates: Map<string, ExchangeRate> = new Map()
 
   static withExchangeRate(from: Currency, to: Currency, rate: number): Bank {
     const bank = new Bank()
     bank.AddExchangeRate(from, to, rate)
-    bank.rates.push(new ExchangeRate(from, to, rate))
     return bank
   }
 
   AddExchangeRate(from: Currency, to: Currency, rate: number): void {
-    this._exchangeRates.set(this.KeyFor(from, to), rate)
+    this.rates.set(this.KeyFor(from, to), new ExchangeRate(from, to, rate))
   }
 
   ConvertMoney(money: Money, currency: Currency): Money {
@@ -41,10 +42,10 @@ export class Bank {
   private ConvertSafely(from: Money, to: Currency): Money {
     return from.currency === to
       ? from
-      : new Money(from.multiply(this._exchangeRates.get(this.KeyFor(from.currency, to))).amount, to)
+      : new Money(from.multiply(this.rates.get(this.KeyFor(from.currency, to)).rate).amount, to)
   }
 
-  private readonly CanConvert = (from: Currency, to: Currency): boolean => from === to || this._exchangeRates.has(this.KeyFor(from, to))
+  private readonly CanConvert = (from: Currency, to: Currency): boolean => from === to || this.rates.has(this.KeyFor(from, to))
 
   private readonly KeyFor = (from: Currency, to: Currency): string => from + '->' + to
 }
