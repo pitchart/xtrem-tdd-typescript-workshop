@@ -2,12 +2,13 @@ import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
 import { MissingExchangeRateError } from '../src/MissingExchangeRateError'
 import { Money } from '../src/Money'
+import { ExchangeRate } from '../src/ExchangeRate'
 
 let bank: Bank
 
 describe('Bank', function () {
   beforeEach(() => {
-    bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
+    bank = Bank.withExchangeRates(new ExchangeRate(Currency.EUR, Currency.USD, 1.2))
   })
 
   it('should convert one currency to another when exchange rate exists', () => {
@@ -27,8 +28,8 @@ describe('Bank', function () {
     // arrange/Given
     const before = bank.ConvertMoney(new Money(10, Currency.EUR), Currency.USD)
     // act/When
-    bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.3)
-    const after = bank.ConvertMoney(new Money(10, Currency.EUR), Currency.USD)
+    const anotherBank = bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.3)
+    const after = anotherBank.ConvertMoney(new Money(10, Currency.EUR), Currency.USD)
     // assert/Then
 
     expect(after).not.toEqual(before)

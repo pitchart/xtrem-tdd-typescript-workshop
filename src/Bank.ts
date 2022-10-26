@@ -14,11 +14,16 @@ export class Bank {
 
   static withExchangeRates (...exchangeRates: ExchangeRate[]): Bank {
     const bank = new Bank()
+    exchangeRates.forEach((exchangeRate) => {
+      bank.rates.set(bank.KeyFor(exchangeRate.from, exchangeRate.to), exchangeRate)
+    })
     return bank
   }
 
-  AddExchangeRate(from: Currency, to: Currency, rate: number): void {
-    this.rates.set(this.KeyFor(from, to), new ExchangeRate(from, to, rate))
+  AddExchangeRate(from: Currency, to: Currency, rate: number): Bank {
+    const newRates = new Map(this.rates)
+    newRates.set(this.KeyFor(from, to), new ExchangeRate(from, to, rate))
+    return Bank.withExchangeRates(...newRates.values())
   }
 
   ConvertMoney(money: Money, currency: Currency): Money {

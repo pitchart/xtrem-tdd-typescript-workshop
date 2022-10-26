@@ -14,9 +14,6 @@ describe('Portfolio', function () {
       new ExchangeRate(Currency.USD, Currency.KRW, 1100),
       new ExchangeRate(Currency.EUR, Currency.KRW, 220)
     )
-    bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
-    bank.AddExchangeRate(Currency.USD, Currency.KRW, 1100)
-    bank.AddExchangeRate(Currency.EUR, Currency.KRW, 220)
     portfolio = new Portfolio()
   })
   it('should 5 USD + 10 EUR = 17 USD', () => {
