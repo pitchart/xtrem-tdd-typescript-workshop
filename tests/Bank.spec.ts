@@ -9,28 +9,28 @@ describe('Bank', function () {
     bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
   })
 
-  test('10 EUR -> USD = 12 USD', () => {
+  it('should convert one currency to another when exchange rate exists', () => {
     expect(bank.Convert(10, Currency.EUR, Currency.USD)).toBe(12)
   })
 
-  test('10 EUR -> EUR = 10 EUR', () => {
+  it('should convert to the same currency', () => {
     expect(bank.Convert(10, Currency.EUR, Currency.EUR)).toBe(10)
   })
 
-  test('Throws a MissingExchangeRateException in case of missing exchange rates', () => {
+  it('should not convert in case of missing exchange rates', () => {
     expect(() => bank.Convert(10, Currency.EUR, Currency.KRW))
-      .toThrow(MissingExchangeRateError)
+      .toThrow(MissingExchangeRateError).toThrow('EUR-> KRW')
   })
 
-  test('Conversion with different exchange rates EUR -> USD', () => {
-    expect(bank.Convert(10, Currency.EUR, Currency.USD)).toBe(12)
-
+  it('should convert currency with the correct exchange rate when I change the exchange rate', () => {
+    // arrange/Given
+    const before = bank.Convert(10, Currency.EUR, Currency.USD)
+    // act/When
     bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.3)
+    const after = bank.Convert(10, Currency.EUR, Currency.USD)
+    // assert/Then
 
-    expect(bank.Convert(10, Currency.EUR, Currency.USD)).toBe(13)
-
-    bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.5)
-
-    expect(bank.Convert(10, Currency.EUR, Currency.USD)).toBe(15)
+    expect(after).not.toBe(before)
+    expect(after).toBe(13)
   })
 })
