@@ -1,5 +1,6 @@
 import { Currency } from './Currency'
 import { MissingExchangeRateError } from './MissingExchangeRateError'
+import { Money } from './Money'
 
 export class Bank {
   private readonly _exchangeRates: Map<string, number> = new Map()
@@ -18,6 +19,10 @@ export class Bank {
     if (!this.CanConvert(from, to)) { throw new MissingExchangeRateError(from, to) }
 
     return this.ConvertSafely(amount, from, to)
+  }
+
+  ConvertMoney (money: Money, currency: Currency): Money {
+    return new Money(this.Convert(money.amount, money.currency, currency), currency)
   }
 
   private ConvertSafely (amount: number, from: Currency, to: Currency): number {

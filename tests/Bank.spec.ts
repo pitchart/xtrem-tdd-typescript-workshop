@@ -1,6 +1,7 @@
 import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
 import { MissingExchangeRateError } from '../src/MissingExchangeRateError'
+import { Money } from '../src/Money'
 
 let bank: Bank
 
@@ -10,7 +11,7 @@ describe('Bank', function () {
   })
 
   it('should convert one currency to another when exchange rate exists', () => {
-    expect(bank.Convert(10, Currency.EUR, Currency.USD)).toBe(12)
+    expect(bank.ConvertMoney(new Money(10, Currency.EUR), Currency.USD)).toEqual(new Money(12, Currency.USD))
   })
 
   it('should convert to the same currency', () => {
