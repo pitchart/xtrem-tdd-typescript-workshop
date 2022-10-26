@@ -2,12 +2,18 @@ import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
 import { Portfolio } from '../src/Portfolio'
 import { Money } from '../src/Money'
+import { ExchangeRate } from '../src/ExchangeRate'
 
 let bank: Bank
 let portfolio: Portfolio
 
 describe('Portfolio', function () {
   beforeEach(() => {
+    bank = Bank.withExchangeRates(
+      new ExchangeRate(Currency.EUR, Currency.USD, 1.2),
+      new ExchangeRate(Currency.USD, Currency.KRW, 1100),
+      new ExchangeRate(Currency.EUR, Currency.KRW, 220)
+    )
     bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
     bank.AddExchangeRate(Currency.USD, Currency.KRW, 1100)
     bank.AddExchangeRate(Currency.EUR, Currency.KRW, 220)

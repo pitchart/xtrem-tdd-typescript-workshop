@@ -4,13 +4,14 @@
     "module": "commonjs",
     "target": "es2019",
     "esModuleInterop": true,
-    "allowJs": false,
+    "allowJs": false
   },
   "files": [
     "node_modules/jest-extended/types/index.d.ts",
     "node_modules/jest-chain/types/index.d.ts",
     "src/Money.ts",
-    "./tests/MoneyError.ts"
+    "./tests/MoneyError.ts",
+    "./src/ExchangeRate.ts"
   ],
   "include": ["src/**/*", "tests/**/*"]
 }

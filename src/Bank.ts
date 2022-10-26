@@ -1,22 +1,7 @@
 import { Currency } from './Currency'
+import { ExchangeRate } from './ExchangeRate';
 import { MissingExchangeRateError } from './MissingExchangeRateError'
 import { Money } from './Money'
-
-class ExchangeRate {
-  private readonly from: Currency;
-  private readonly to: Currency;
-  private readonly _rate: number;
-  public get rate(): number {
-    return this._rate;
-  }
-
-  constructor(from: Currency, to: Currency, rate: number) {
-    this.from = from;
-    this.to = to;
-    this._rate = rate;
-  }
-  
-}
 
 export class Bank {
   private readonly rates: Map<string, ExchangeRate> = new Map()
@@ -24,6 +9,11 @@ export class Bank {
   static withExchangeRate(from: Currency, to: Currency, rate: number): Bank {
     const bank = new Bank()
     bank.AddExchangeRate(from, to, rate)
+    return bank
+  }
+
+  static withExchangeRates (...exchangeRates: ExchangeRate[]): Bank {
+    const bank = new Bank()
     return bank
   }
 
