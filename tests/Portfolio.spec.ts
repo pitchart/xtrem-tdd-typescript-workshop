@@ -1,43 +1,53 @@
 import { Currency } from '../src/Currency'
 import { Bank } from '../src/Bank'
 
+let bank: Bank
+let portfolio: Portfolio
+
 describe('Portfolio', function () {
+  beforeEach(() => {
+    bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
+    bank.AddExchangeRate(Currency.USD, Currency.KRW, 1100)
+    portfolio = new Portfolio()
+  })
   it('should 5 USD + 10 EUR = 17 USD', () => {
-    const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
-    const portfolio = new Portfolio()
     portfolio.add(5, Currency.USD)
     portfolio.add(10, Currency.EUR)
+
     expect(portfolio.evaluate(bank, Currency.USD)).toBe(17)
   })
 
   it('should 10 USD + 10 EUR = 22 USD', () => {
-    const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
-    const portfolio = new Portfolio()
     portfolio.add(10, Currency.USD)
     portfolio.add(10, Currency.EUR)
+
     expect(portfolio.evaluate(bank, Currency.USD)).toBe(22)
   })
 
   it('should 5 USD + 10 USD = 15 USD', () => {
-    const bank = Bank.withExchangeRate(Currency.EUR, Currency.USD, 1.2)
-    const portfolio = new Portfolio()
     portfolio.add(5, Currency.USD)
     portfolio.add(10, Currency.USD)
+
     expect(portfolio.evaluate(bank, Currency.USD)).toBe(15)
   })
   it('should 1 USD + 1100 KRW = 2200 KRW', () => {
-    const bank = Bank.withExchangeRate(Currency.USD, Currency.KRW, 1100)
-    const portfolio = new Portfolio()
     portfolio.add(1, Currency.USD)
     portfolio.add(1100, Currency.KRW)
+
     expect(portfolio.evaluate(bank, Currency.KRW)).toBe(2200)
+  })
+  it('should 1 USD + 10 EUR = 3300 KRW', () => {
+    portfolio.add(1, Currency.USD)
+    portfolio.add(10, Currency.EUR)
+
+    expect(portfolio.evaluate(bank, Currency.KRW)).toBe(3300)
   })
 })
 
 class Portfolio {
   content: Map<Currency, number> = new Map()
 
-  evaluate (bank: Bank, currency: Currency): number {
+  evaluate(bank: Bank, currency: Currency): number {
     let result: number = 0
     this.content.forEach((value, key) => {
       result += bank.Convert(value, key, currency)
@@ -45,7 +55,7 @@ class Portfolio {
     return result
   }
 
-  add (amount: number, currency: Currency): void {
+  add(amount: number, currency: Currency): void {
     const newAmount = amount + (this.content.get(currency) ?? 0)
     this.content.set(currency, newAmount)
   }
