@@ -6,7 +6,7 @@ describe('Money', function () {
     expect(() => new Money(-10, Currency.USD)).toThrow('Money can not have a negative amount')
   })
 
-  it('multiply euros by 2 returns twice the amount in euros', () => {
+  it('should be multiplied by a number', () => {
     const money: Money = new Money(10, Currency.EUR)
 
     const multiplied = money.times(2)
@@ -31,7 +31,7 @@ describe('Money', function () {
     expect(moneyAddition).toThrow('Can not add USD with EUR')
   })
 
-  it('should divide by a number', () => {
+  it('should be divided by a number', () => {
     const money = new Money(4002, Currency.KRW)
 
     const divided = money.divide(4)
@@ -39,7 +39,7 @@ describe('Money', function () {
     expect(divided).toEqual(new Money(1000.5, Currency.KRW))
   })
 
-  it('should not divide by 0', () => {
+  it('should not be divided by 0', () => {
     const money = new Money(4002, Currency.KRW)
 
     const division = (): Money => money.divide(0)
