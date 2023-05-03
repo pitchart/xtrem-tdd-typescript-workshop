@@ -19,7 +19,7 @@ describe('Bank', function () {
 
   test('Throws a MissingExchangeRateException in case of missing exchange rates', () => {
     expect(() => bank.Convert(10, Currency.EUR, Currency.KRW))
-      .toThrow(MissingExchangeRateError)
+      .toThrow(MissingExchangeRateError).toThrow('EUR-> KRW');
   })
 
   test('Conversion with different exchange rates EUR -> USD', () => {
