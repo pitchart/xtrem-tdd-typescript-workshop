@@ -1,5 +1,6 @@
-import { Currency } from './Currency'
-import { MissingExchangeRateError } from './MissingExchangeRateError'
+import {Currency} from './Currency'
+import {MissingExchangeRateError} from './MissingExchangeRateError'
+import {Money} from "./Money";
 
 export class Bank {
   private readonly _exchangeRates: Map<string, number> = new Map()
@@ -14,16 +15,16 @@ export class Bank {
     this._exchangeRates.set(this.KeyFor(from, to), rate)
   }
 
-  Convert (amount: number, from: Currency, to: Currency): number {
-    if (!this.CanConvert(from, to)) { throw new MissingExchangeRateError(from, to) }
+  Convert (money: Money, to: Currency): number {
+    if (!this.CanConvert(money.currency, to)) { throw new MissingExchangeRateError(money.currency, to) }
 
-    return this.ConvertSafely(amount, from, to)
+    return this.ConvertSafely(money, to)
   }
 
-  private ConvertSafely (amount: number, from: Currency, to: Currency): number {
-    return to === from
-      ? amount
-      : amount * this._exchangeRates.get(this.KeyFor(from, to))
+  private ConvertSafely (money: Money, to: Currency): number {
+    return to === money.currency
+      ? money.amount
+      : money.times(this._exchangeRates.get(this.KeyFor(money.currency, to))).amount
   }
 
   private readonly CanConvert = (from: Currency, to: Currency): boolean => from === to || this._exchangeRates.has(this.KeyFor(from, to))

@@ -1,10 +1,10 @@
 import { Currency } from './Currency'
 
 export class Money {
-  constructor (private readonly amount: number, private readonly currency: Currency) {
+  constructor (readonly amount: number, readonly currency: Currency) {
   }
 
-  add (money: Money) {
+  add (money: Money): Money {
     if (this.currency !== money.currency) {
       throw new Error('je sais pas')
     }
