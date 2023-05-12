@@ -11,11 +11,11 @@ describe('Bank', function () {
   })
 
   test('10 EUR -> USD = 12 USD', () => {
-    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toBe(12)
+    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toEqual(new Money(12, Currency.USD))
   })
 
   test('10 EUR -> EUR = 10 EUR', () => {
-    expect(bank.Convert(new Money(10, Currency.EUR), Currency.EUR)).toBe(10)
+    expect(bank.Convert(new Money(10, Currency.EUR), Currency.EUR)).toEqual(new Money(10, Currency.EUR))
   })
 
   test('Throws a MissingExchangeRateException in case of missing exchange rates', () => {
@@ -24,14 +24,14 @@ describe('Bank', function () {
   })
 
   test('Conversion with different exchange rates EUR -> USD', () => {
-    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toBe(12)
+    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toEqual(new Money(12, Currency.USD))
 
     bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.3)
 
-    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toBe(13)
+    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toEqual(new Money(13, Currency.USD))
 
     bank.AddExchangeRate(Currency.EUR, Currency.USD, 1.5)
 
-    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toBe(15)
+    expect(bank.Convert(new Money(10, Currency.EUR), Currency.USD)).toEqual(new Money(15, Currency.USD))
   })
 })

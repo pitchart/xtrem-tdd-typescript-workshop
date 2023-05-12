@@ -3,20 +3,19 @@ import { Bank } from "./Bank";
 import {Money} from "./Money";
 
 export class Portfolio {
-  private readonly amounts: [number, Currency][] = []
+  private readonly moneys: Money[] = []
 
-  add(amount: number, currency: Currency): void {
-    this.amounts.push([amount, currency])
+  add(money: Money): void {
+    this.moneys.push(money)
   }
 
-  evaluate (currency: Currency, bank: Bank): [number, Currency] {
-    const amount = this.amounts
-      .map((money: [number, Currency]): [number, Currency] => {
-        return [bank.Convert(new Money(money[0], money[1]), currency), currency]
+  evaluate (currency: Currency, bank: Bank): Money {
+    return this.moneys
+      .map((money: Money): Money => {
+        return bank.Convert(money, currency)
       })
-      .reduce((acc: number, currentValue: [number, Currency]): number => {
-        return acc + currentValue[0]
-      }, 0)
-    return [amount, currency]
+      .reduce((acc: Money, currentValue: Money): Money => {
+        return acc.add(currentValue)
+      }, new Money(0, currency))
   }
 }

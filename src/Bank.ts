@@ -15,16 +15,16 @@ export class Bank {
     this._exchangeRates.set(this.KeyFor(from, to), rate)
   }
 
-  Convert (money: Money, to: Currency): number {
+  Convert (money: Money, to: Currency): Money {
     if (!this.CanConvert(money.currency, to)) { throw new MissingExchangeRateError(money.currency, to) }
 
     return this.ConvertSafely(money, to)
   }
 
-  private ConvertSafely (money: Money, to: Currency): number {
+  private ConvertSafely (money: Money, to: Currency): Money {
     return to === money.currency
-      ? money.amount
-      : money.times(this._exchangeRates.get(this.KeyFor(money.currency, to))).amount
+      ? money
+      : new Money(money.amount * this._exchangeRates.get(this.KeyFor(money.currency, to)), to)
   }
 
   private readonly CanConvert = (from: Currency, to: Currency): boolean => from === to || this._exchangeRates.has(this.KeyFor(from, to))
