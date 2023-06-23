@@ -1,3 +1,4 @@
+import { Either } from 'funfix-core';
 import {Currency} from './Currency'
 import {MissingExchangeRateError} from './MissingExchangeRateError'
 import {Money} from "./Money";
@@ -15,10 +16,12 @@ export class Bank {
     this._exchangeRates.set(this.KeyFor(from, to), rate)
   }
 
-  Convert (money: Money, to: Currency): Money {
-    if (!this.CanConvert(money.currency, to)) { throw new MissingExchangeRateError(money.currency, to) }
+  // @TODO - Install lib either / try / option
+  // Either<MissingExchangeRateError, Money>
+  Convert (money: Money, to: Currency): Either<MissingExchangeRateError, Money> {
+    if (!this.CanConvert(money.currency, to)) { return Either.left(new MissingExchangeRateError(money.currency, to))}
 
-    return this.ConvertSafely(money, to)
+    return Either.right(this.ConvertSafely(money, to))
   }
 
   private ConvertSafely (money: Money, to: Currency): Money {
